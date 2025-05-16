@@ -31,14 +31,17 @@ Avoid naming emotions directly. Mirror the feeling with softness.
 Always end with a grounding sentence, mantra, or soft invitation.
 """
 
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=150,
-        temperature=0.7,
-        n=1,
-        stop=None
-    )
+  response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",  # or "gpt-4" if you're using that
+    messages=[
+        {"role": "system", "content": "You are Moe, an emotionally intelligent AI guide."},
+        {"role": "user", "content": prompt}
+    ],
+    max_tokens=150,
+    temperature=0.7
+)
+
+reply = response.choices[0].message.content.strip()
 
     reply = response.choices[0].text.strip()
     bot.send_message(chat_id=chat_id, text=reply)
