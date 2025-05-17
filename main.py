@@ -17,6 +17,16 @@ bot = telegram.Bot(token=TELEGRAM_TOKEN)
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
+@app.route("/check_credits")
+def check_credits():
+    import requests
+    headers = {
+        "Authorization": f"Bearer {OPENAI_API_KEY}"
+    }
+    response = requests.get("https://api.openai.com/v1/dashboard/billing/credit_grants", headers=headers)
+    return response.json()
+
+
 @app.route(f"/{TELEGRAM_TOKEN}", methods=['POST'])
 def webhook():
     update = telegram.Update.de_json(request.get_json(force=True), bot)
