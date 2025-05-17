@@ -11,7 +11,7 @@ MOE_ADMIN_CHAT_ID = os.getenv("MOE_ADMIN_CHAT_ID")
 
 # Set up API keys
 openai.api_key = OPENAI_API_KEY
-openai.organization = "org-Juf9AXgUvlbIAQMDAxa4b7W7"  # 👈 Add this line
+openai.organization = "org-Juf9AXgUvlbIAQMDAxa4b7W7"
 bot = telegram.Bot(token=TELEGRAM_TOKEN)
 
 # Flask setup
