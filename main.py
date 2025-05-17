@@ -17,14 +17,19 @@ bot = telegram.Bot(token=TELEGRAM_TOKEN)
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
-@app.route("/check_credits")
-def check_credits():
-    import requests
-    headers = {
-        "Authorization": f"Bearer {OPENAI_API_KEY}"
-    }
-    response = requests.get("https://api.openai.com/v1/dashboard/billing/credit_grants", headers=headers)
-    return response.json()
+@app.route("/ping_openai")
+def ping_openai():
+    try:
+        test_response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": "Ping"}],
+            max_tokens=5
+        )
+        return "✅ OpenAI is responding", 200
+    except openai.error.RateLimitError:
+        return "❌ Still hitting quota limits", 429
+    except Exception as e:
+        return f"❌ OpenAI error: {str(e)}", 500
 
 
 @app.route(f"/{TELEGRAM_TOKEN}", methods=['POST'])
